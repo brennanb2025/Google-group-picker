@@ -1,0 +1,163 @@
+list of tools that I didn't implement but might later:
+
+#######TESTING FOR PRIMS CHRIS USE THIS
+    """
+    everyPerson2 = []
+    list = prims(onlyConnections)
+    print("Prims done,", len(list))
+    for i in range(len(list)):
+        print("RUNNING")
+        print(list[i])
+        everyPerson2.append(Node(0, 0, list[i][0]))
+    for i in range(len(list)):
+        for j in list[i]:
+            everyPerson2[i].edgeWeights[j[0]] = j[1]
+            everyPerson2[i].connections.append(j[0])
+    for i in everyPerson2:
+        print(i.name)
+    graphTest = createGraph(everyPerson2)
+    plotGraph(graphTest, None)
+    ###########TESTING END
+    """
+
+
+    """ pre grouper, tries all xs in order and doesn't automatically go to largest node
+    #testing to see if the value changes if I change the starting node
+    alreadyGroupedNodes = []
+    groupings = [] #array of arrays of size of 2 nodes
+    cantmakeConnection = []
+    while len(alreadyGroupedNodes) != (len(everyPerson)-len(cantmakeConnection)) and i < len(adj): #not all nodes have been grouped
+        largestEdgeNum = -1  # the value of the largest edge
+        j = -1  # the index of the largest edge value
+        i = 0
+        while i+1 < len(adj): #go through all of the array, find largest coordinates
+            for z in range(len(adj[i])):
+                if z not in alreadyGroupedNodes and adj[i][z] > largestEdgeNum and i != z: #get largest in that col
+                    largestEdgeNum = adj[i][z]
+                    j = z
+            i+=1
+
+        # at the end, the largest will be (i,j)
+        if largestEdgeNum != -1:
+            alreadyGroupedNodes.append(i)
+            alreadyGroupedNodes.append(j)  # add both people to alreadygrouped
+            print(len(everyPerson), i, j)
+            group = [everyPerson[i], everyPerson[j]]
+            groupings.append(group)
+        else: #end: no nodes have a connection.
+            print("ended, no nodes have a connection.")
+            break
+
+
+    print("GROUPINGS:")
+    for i in range(len(groupings)):
+        for j in range(len(groupings[i])):
+            if j != len(groupings[i])-1:
+                print(groupings[i][j].name, "and", end=" ")
+            else: print(groupings[i][j].name)
+    if(len(groupings) == 0):
+        print("No groupings found.")
+
+    print("CAN'T BE GROUPED:")
+    #for i in cantmakeConnection:
+
+    noConnections = True
+    for i in everyPerson:
+        didntMakeCxn = True
+        for j in groupings:
+            if i in j:
+                didntMakeCxn = False
+        if didntMakeCxn:
+            print(i.name)
+            noConnections = False
+    if noConnections:
+        print("Everybody was grouped.")
+
+
+    everyPersonNew = everyPerson
+    for i in range(len(everyPersonNew)): #set cant make connections nodes equal to blank node.
+        for j in cantmakeConnection:
+            if everyPersonNew[i] == j:
+                emptyList = []
+                everyPersonNew[i] = Node(emptyList, emptyList, j.name)
+
+    for i in range(len(everyPersonNew)):
+        for j in groupings:
+            if everyPersonNew[i] == j[0]: #find the grouping nodes in everyPerson
+                cxns = []
+                cxns.append(j[1])
+                everyPersonNew[i].connections = cxns
+                edgeWeights = {}
+                if everyPersonNew[i].name in j[1].getEdgeWeights():
+                    edgeWeights[j[1].name] = j[1].getEdgeWeights()[everyPersonNew[i].name] #set edge weights
+                    everyPersonNew[i].edgeWeights = edgeWeights
+            elif everyPersonNew[i] == j[1]: #check the other one
+                cxns = []
+                cxns.append(j[0])
+                everyPersonNew[i].connections = cxns
+                edgeWeights = {}
+                edgeWeights[j[0].name] = j[0].getEdgeWeights()[everyPersonNew[i].name]  # set edge weights
+                everyPersonNew[i].edgeWeights = edgeWeights
+    return everyPersonNew
+    """
+
+
+""" for testing mostly
+        if not alreadyGroupedNodes.__contains__(x): #go through all nodes that have not been grouped
+            largestEdgeNum = -1 #the value of the largest edge
+            largestEdgeIndex = -1 #the index of the largest edge value
+            #for z in adj[selectedCol]:
+            #testing: works. print("i:",i,"len(adj):",len(adj),)
+            for y in range(len(adj[x])): #go through all edge weights of i (x,y)
+                #Testing: print(adj[i][z] not in alreadyGroupedNodes,",", adj[i][z], ">", "-1?:", adj[i][z] > -1,",", i != z)
+                if y not in alreadyGroupedNodes and adj[x][y] > largestEdgeNum and x != y: #get largest in that col
+                    largestEdgeNum = adj[x][y]
+                    largestEdgeIndex = y
+            #testing: print("largest value in row:", largestEdgeNum)
+            if largestEdgeNum != -1:
+                alreadyGroupedNodes.append(x)
+                alreadyGroupedNodes.append(largestEdgeIndex) #add both people to alreadygrouped
+                group = [everyPerson[x], everyPerson[largestEdgeIndex]]
+                groupings.append(group)
+            else:
+                cantmakeConnection.append(everyPerson[x]) #remove later?
+        x+=1
+        """
+
+
+    """ for removing zeroes in graph
+    onlyConnectionsCopy = onlyConnections.copy() #doesnt work
+    toDeleteCxns = [] #messes up for loop if deleting in the loop, [[node to delete from, node to delete],[]]
+    for i in range(len(onlyConnectionsCopy)):
+        for j in range(len(onlyConnectionsCopy)):
+            if onlyConnectionsCopy[j].name in onlyConnectionsCopy[i].getEdgeWeights():
+                if onlyConnectionsCopy[i].getEdgeWeights()[onlyConnectionsCopy[j].name] == 0: #remove all values of 0
+                    addTmpArr = []
+                    addTmpArr.append(onlyConnectionsCopy[i])
+                    addTmpArr.append(onlyConnectionsCopy[i].getConnections()[onlyConnectionsCopy[j]])
+                    toDeleteCxns.append(addTmpArr)
+
+    for i in toDeleteCxns:
+        indexNodeToDeleteFrom = -1
+        for j in onlyConnectionsCopy:
+            if j == i[0]:
+                indexNodeToDeleteFrom = j
+        indexNodeToDelete = -1
+        if indexNodeToDelete == -1:
+            print(i[0].name)
+            break
+        for j in onlyConnectionsCopy[indexNodeToDeleteFrom]:
+            if j == i[1]:
+                indexNodeToDelete = j
+
+        del onlyConnectionsCopy[indexNodeToDeleteFrom].connections[indexNodeToDelete]
+        del onlyConnectionsCopy[indexNodeToDeleteFrom].edgeWeights[onlyConnectionsCopy[indexNodeToDelete].name]
+"""
+ ^+v
+    """graphOnlyCxnsNoZeroes = createGraph(onlyConnectionsCopy)
+    plotGraph(graphOnlyCxnsNoZeroes, 3 * 1 / np.sqrt(len(graphOnlyCxnsNoZeroes.nodes())),
+              "Graph of only people with preferences and no zeroes")"""
+
+    """Graph of everyone only connections ungrouped
+    #graph1 = createGraph(onlyConnections)
+    #plotGraph(graph1, None, "Graph of only people with preferences")

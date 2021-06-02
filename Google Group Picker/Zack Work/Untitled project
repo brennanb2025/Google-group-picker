@@ -1,0 +1,1 @@
+{"files":[{"id":"6f52dbdb-5668-46bb-9861-5bd9e0f2b4ff","name":"Code","type":"server_js","source":"function doGet(e) {\n  \n  \n}\n"},{"id":"7fa1093b-acdc-4a2c-a5ff-d4c40cc705ce","name":"appsscript","type":"json","source":"{\n  \"timeZone\": \"America/Los_Angeles\",\n  \"dependencies\": {\n  },\n  \"exceptionLogging\": \"STACKDRIVER\"\n}"}]}
